@@ -2,14 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>eZdravje :: 4. DN :: OIS 2015/2016</title>
+  <title>eZdravila :: 4. DN :: OIS 2015/2016</title>
   <link href="knjiznice/css/bootstrap.min.css" rel="stylesheet">
+  <link href="knjiznice/css/toastr.css" rel="stylesheet">
   <style>
     body {padding-top: 70px;}
   </style>
   <script src="knjiznice/js/jquery-2.2.3.min.js"></script>
   <script src="knjiznice/js/bootstrap.min.js"></script>
   <script src="knjiznice/js/koda.js"></script>
+  <script src="knjiznice/js/toastr.js"></script>
 </head>
 <body>
 
@@ -22,14 +24,14 @@
           <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
         </button>
         <!-- ZAČETEK: Ime vaše aplikacije -->
-        <a class="navbar-brand" href="index.html">{ime vaše aplikacije}</a>
+        <a class="navbar-brand" href="index.html">eZdravila</a>
         <!-- KONEC: Ime vaše aplikacije -->
       </div>
       <div class="collapse navbar-collapse" id="menujska-vrstica">
         <ul class="nav navbar-nav">
           <li><a href="opis.html">Opis ideje</a></li>
           <li><a href="nacrt.html">Načrt informacijske rešitve</a></li>
-          <li><a href="#">Generiranje podatkov</a></li>
+          <li><a href="#" onclick="generiraj()">Generiranje podatkov</a></li>
         </ul>
       </div>
     </div>
@@ -38,13 +40,90 @@
 
   <!-- ZAČETEK: Vsebina aplikacije -->
   <div class="container">
+    <span id="kreirajSporocilo"></span>
+    
     <div class="row">
-      <div class="col-lg-12 text-center">
-        <p class="lead"><strong>TO-DO</strong>: Na tem mestu implementirajte vašo aplikacijo.</p>
+      
+      <div class="col-lg-6">
+        <div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-lg-8 col-md-8 col-sm-8"><b>Preberi trenutne vitalne znake</b> obstoječega bolnika</div>
+							<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiObstojeciEHR"><option value=""></option></select></div>
+						</div>
+					</div>
+					<div class="panel-body">
+						<span class="label label-default">EHR ID</span><input id="preberiEHRid" type="text" class="form-control input-mini">
+						<button type="button" class="btn btn-primary btn-xs" onclick="preberiEHRBolnika()">Preberi trenutne vitalne znake bolnika</button><br><span id="preberiSporocilo"></span>
+				    <div id="rezultatMeritveVitalnihZnakov"></div>
+				  </div>
+				</div>
       </div>
+      
+      <div class="col-lg-6 col-md-6 col-sm-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-lg-8 col-md-8 col-sm-8"><b>Kreiraj EHR zapis za novega bolnika</div>
+							
+						</div>
+					</div>
+					<div class="panel-body">
+						<span class="label label-default">Ime</span><input id="kreirajIme" type="text" class="form-control input-mini" placeholder="">
+						<span class="label label-default">Priimek</span><input id="kreirajPriimek" type="text" class="form-control" placeholder="">
+						<span class="label label-default">Datum rojstva</span><input id="kreirajDatumRojstva" type="text" class="form-control" placeholder="">
+						<button type="button" class="btn btn-primary btn-xs" onclick="kreirajEHRzaBolnika()">Dodaj osnovne podatke o bolniku</button><span id="kreirajSporocilo"></span>
+				  	</div>
+				</div>
+			</div>
+      
     </div>
+    
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-lg-8 col-md-8 col-sm-8">Vnesi trenutne vitalne znake obstoječega bolnika</div>
+							<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="vitalniZnakiEhr"><option value=""></option></select></div>
+						</div>
+					</div>
+					<div class="panel-body">
+						<span class="label label-default">EHR ID</span><input id="ehrIdBolnika" type="text" class="form-control input-mini">
+						<span class="label label-default">Datum in ura</span><input id="cas" type="text" class="form-control input-mini">
+						<span class="label label-default">Telesna višina</span><div class="input-group"><input id="telesnaVisina" type="text" class="form-control input-mini"><span class="input-group-addon">cm</span></div>
+						<span class="label label-default">Telesna teža</span><div class="input-group"><input id="telesnaTeza" type="text" class="form-control input-mini"><span class="input-group-addon">kg</span></div>
+						<span class="label label-default">Telesna temperatura</span><div class="input-group"><input id="telesnaTemperatura" type="text" class="form-control input-mini"><span class="input-group-addon">°C</span></div>
+						<span class="label label-default">Sistolični krvni tlak</span><div class="input-group"><input id="sisKrvniTlak" type="text" class="form-control input-mini"><span class="input-group-addon">mm Hg</span></div>
+						<span class="label label-default">Diastolični krvni tlak</span><div class="input-group"><input id="diaKrvniTlak" type="text" class="form-control input-mini"><span class="input-group-addon">mm Hg</span></div>
+						<span class="label label-default">Nasičenost krvi s kisikom</span><div class="input-group"><input id="nasKrvi" type="text" class="form-control input-mini"><span class="input-group-addon">%</span></div>
+						<button type="button" class="btn btn-primary btn-xs" onclick="vnesiVitalneZnake()">Vnesi vitalne znake</button><br><span id="preberiSporocilo"></span></div>
+				  </div>
+				</div>
+				
+				<div class="col-lg-6">
+          <div class="panel panel-default">
+  					<div class="panel-heading">
+  						<div class="row">
+  							<div class="col-lg-8 col-md-8 col-sm-8"><b>Pripiši zdravila</b> obstoječemu bolniku</div>
+  							<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="zdravilaObstojeciEHR"><option value=""></option></select></div>
+  						</div>
+  					</div>
+  					<div class="panel-body">
+  						<span class="label label-default">EHR ID</span><input id="zdravilaEHRid" type="text" class="form-control input-mini">
+  						<span class="label label-default">Ime zdravila</span><input id="zdraviloIme" type="text" class="form-control input-mini">
+  						<button type="button" class="btn btn-primary btn-xs" onclick="poisciZdravilo()">Poišči zdravilo</button>
+  						<div id="rezultatIskanjaZdravil"></div>
+  				  </div>
+  				</div>
+        </div>
+      
+      </div>
+      
+      
+    </div>
+    
   </div>
-  <!-- KONEC: Vsebina aplikacije -->
 
 </body>
 </html>
